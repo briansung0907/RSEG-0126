@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SieveProject" default="run" basedir=".">
+    <property name="src" value="." />
+    <property name="build" value="build" />
+    <property name="dist" value="dist" />
+    <property name="main-class" value="Sieve" />
+
+    <target name="init">
+        <mkdir dir="${build}" />
+        <mkdir dir="${dist}" />
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${build}" />
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${dist}/${ant.project.name}.jar" basedir="${build}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="jar">
+        <exec executable="cmd" osfamily="windows">
+            <arg value="/c"/>
+            <arg value="echo 100 | java -jar ${dist}\${ant.project.name}.jar"/>
+        </exec>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}" />
+        <delete dir="${dist}" />
+    </target>
+</project>
