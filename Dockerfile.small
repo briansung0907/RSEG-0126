@@ -1,0 +1,14 @@
+# Stage 1: Build Stage
+FROM eclipse-temurin:21-jdk AS build
+
+WORKDIR /app
+COPY Sieve.java .
+RUN javac Sieve.java
+
+# Stage 2: Runtime Stage
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /app
+COPY --from=build /app/Sieve.class .
+
+ENTRYPOINT ["java", "Sieve"]
